@@ -1,6 +1,14 @@
 [
   {
     "date": "2026-02-24",
+    "title": "招商港口 (001872) 分析报告 - 财务数据更新版",
+    "symbol": "001872",
+    "notes": "Forced live refresh to fix empty financials",
+    "path": "reports/20260224-144534-招商港口_分析报告.html",
+    "created_at": "2026-02-24T14:45:34"
+  },
+  {
+    "date": "2026-02-24",
     "title": "粤高速A (000429) 分析报告 - 财务数据更新版",
     "symbol": "000429",
     "notes": "Forced live refresh to fix empty financials",
