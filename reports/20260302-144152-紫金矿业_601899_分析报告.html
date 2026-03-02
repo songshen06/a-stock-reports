@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>紫金矿业 (601899) 分析报告</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    :root {
+      --bg: #f7f9f6;
+      --panel: #ffffff;
+      --ink: #15221f;
+      --sub: #576a63;
+      --brand: #0e6b63;
+      --brand-2: #0b4f49;
+      --good: #1b8e5f;
+      --risk: #bf4b36;
+      --line: #d7e1db;
+      --accent: #d98a2f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Manrope", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(1000px 380px at -10% -5%, #d8efe7 0%, transparent 60%),
+        radial-gradient(900px 320px at 120% 0%, #f4e4cf 0%, transparent 58%),
+        var(--bg);
+    }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 24px; }
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(140deg, #0d5f57 0%, #0f6f66 48%, #227a67 100%);
+      color: #f8fffd;
+      padding: 24px;
+      box-shadow: 0 18px 30px rgba(14, 58, 53, 0.2);
+    }
+    .hero h1 { margin: 0; font-size: 34px; letter-spacing: 0.2px; }
+    .meta { margin-top: 8px; opacity: 0.95; }
+    .hero-grid { margin-top: 16px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .hero-card { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.28); border-radius: 12px; padding: 10px 12px; }
+    .hero-label { font-size: 12px; opacity: 0.9; }
+    .hero-value { margin-top: 3px; font-size: 20px; font-weight: 700; }
+
+    .grid { margin-top: 16px; display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+    .panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .p-4 { grid-column: span 4; }
+    .p-5 { grid-column: span 5; }
+    .p-6 { grid-column: span 6; }
+    .p-7 { grid-column: span 7; }
+    .p-12 { grid-column: span 12; }
+    .panel h3 { margin: 0 0 12px 0; font-size: 18px; letter-spacing: -0.01em; }
+    .equal-card { min-height: 340px; display: flex; flex-direction: column; }
+    .chart-wrap { position: relative; height: 220px; }
+    .table-wrap { flex: 1; }
+
+    .metric-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .metric-table th, .metric-table td { border-bottom: 1px solid #e7edf3; padding: 9px 8px; font-size: 14px; }
+    .metric-table th { text-align: left; color: var(--sub); font-weight: 600; width: 42%; }
+    .metric-table td { text-align: right; font-weight: 600; width: 58%; }
+
+    .list { margin: 0; padding-left: 18px; }
+    .list li { margin-bottom: 8px; line-height: 1.5; }
+    .bull li::marker { color: var(--good); }
+    .bear li::marker { color: var(--risk); }
+
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .risk-cell {
+      border: 1px solid #e2e8e4;
+      border-radius: 10px;
+      padding: 10px;
+      background: #fbfdfc;
+    }
+    .risk-cell strong { color: #29453e; font-size: 13px; }
+    .risk-cell p { margin: 6px 0 0; font-size: 13px; color: var(--sub); line-height: 1.5; }
+
+    .tip-line { margin: 0 0 8px 0; }
+    .tip-good { color: var(--good); }
+    .tip-risk { color: var(--risk); }
+    .prose {
+      line-height: 1.72;
+      color: #233444;
+      font-size: 15px;
+    }
+    .prose h1, .prose h2, .prose h3 { color: #17324a; margin-top: 1.1em; }
+    .prose { overflow-x: auto; }
+    .prose table {
+      border-collapse: collapse;
+      width: max-content;
+      min-width: 100%;
+      table-layout: auto;
+      margin: 0.6em 0 0.9em 0;
+      background: #fff;
+    }
+    .prose th, .prose td {
+      border: 1px solid #e1e8ef;
+      padding: 8px 10px;
+      vertical-align: top;
+      text-align: left;
+      line-height: 1.5;
+      white-space: normal;
+      word-break: break-word;
+    }
+    .prose th {
+      background: #f6f9fc;
+      color: #2f475d;
+      font-weight: 600;
+    }
+    .prose blockquote {
+      margin: 0.8em 0;
+      padding: 0.4em 0.9em;
+      border-left: 4px solid #bdd5ea;
+      background: #f7fbff;
+      color: #36516a;
+    }
+    .prose code {
+      background: #edf3f8;
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.92em;
+    }
+    .prose pre {
+      background: #0f1720;
+      color: #e6edf3;
+      border-radius: 10px;
+      padding: 12px;
+      overflow-x: auto;
+    }
+
+    @media (max-width: 760px) {
+      .hero-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .p-4, .p-5, .p-6, .p-7 { grid-column: span 12; }
+      .hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>紫金矿业 (601899)</h1>
+      <div class="meta">报告日期：2026年03月02日</div>
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="hero-label">当前价格</div>
+          <div class="hero-value">1,850.00</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-label">投资评级</div>
+          <div class="hero-value">买入</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-label">风险等级</div>
+          <div class="hero-value">中等风险</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-label">预期空间</div>
+          <div class="hero-value">+18.9%</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel p-4 equal-card">
+        <h3>核心指标</h3>
+        <div class="table-wrap">
+          <table class="metric-table"><tr><th>当前价格</th><td>1,850.00</td></tr><tr><th>目标价格</th><td>2,200.00</td></tr><tr><th>市盈率(PE)</th><td>35.20</td></tr><tr><th>市净率(PB)</th><td>11.50</td></tr><tr><th>ROE</th><td>30.50%</td></tr><tr><th>股息率</th><td>1.50%</td></tr></table>
+        </div>
+      </div>
+
+      <div class="panel p-4 equal-card">
+        <h3>决策评分雷达</h3>
+        <div class="chart-wrap">
+          <canvas id="scoreRadar"></canvas>
+        </div>
+      </div>
+
+      <div class="panel p-4 equal-card">
+        <h3>目标空间（当前 vs 目标）</h3>
+        <div class="chart-wrap">
+          <canvas id="targetBullet"></canvas>
+        </div>
+        <div style="margin-top:10px;border-top:1px solid #e7edf3;padding-top:10px;">
+          <p class="tip-line"><strong>图表量程：</strong>固定 0-200（当前=100）</p>
+          <p class="tip-line"><strong>当前值：</strong>1,850.00</p>
+          <p class="tip-line"><strong>目标值：</strong>2,200.00</p>
+          <p class="tip-line"><strong>绝对差：</strong>350.00 </p>
+          <p class="tip-line"><strong>百分比差：</strong>+18.92%</p>
+        </div>
+      </div>
+
+      <div class="panel p-6">
+        <h3>看多逻辑</h3>
+        <ul class="list bull"><li>主业经营相对稳健，现金流质量改善</li><li>估值处于可比区间，具备修复空间</li><li>行业景气边际变化带来业绩弹性</li></ul>
+      </div>
+
+      <div class="panel p-6">
+        <h3>风险与反方逻辑</h3>
+        <ul class="list bear"><li>宏观需求波动影响收入增长</li><li>行业竞争加剧压缩利润空间</li><li>原材料或融资成本上行风险</li></ul>
+      </div>
+
+      <div class="panel p-12">
+        <h3>催化与风险说明</h3>
+        <p class="tip-line tip-good"><strong>催化因素：</strong>业绩超预期、需求改善、政策支持</p>
+        <p class="tip-line tip-risk"><strong>风险说明：</strong>行业景气和经营执行不确定性</p>
+      </div>
+
+      <div class="panel p-12">
+        <h3>风险矩阵（定性）</h3>
+        <div class="risk-grid">
+          <div class="risk-cell"><strong>公司层面</strong><p>宏观需求波动影响收入增长</p></div>
+          <div class="risk-cell"><strong>行业层面</strong><p>行业竞争加剧压缩利润空间</p></div>
+          <div class="risk-cell"><strong>宏观层面</strong><p>关注宏观利率与信用周期变化对估值中枢的影响</p></div>
+          <div class="risk-cell"><strong>市场层面</strong><p>原材料或融资成本上行风险</p></div>
+        </div>
+      </div>
+
+      <div class="panel p-12">
+        <h3>行业因子估值设置</h3>
+        <table class="metric-table">
+          <tr><th>行业分类</th><td>待补充 / 待补充（LLM推荐置信度低）</td></tr>
+          <tr><th>参数档位</th><td>通用档位（default_profile）</td></tr>
+          <tr><th>增长率(基准/乐观/悲观)</th><td>8.0% / 12.0% / 4.0%</td></tr>
+          <tr><th>WACC</th><td>10.0%</td></tr>
+          <tr><th>相对估值权重(PE/PB/PEG/EV)</th><td>25% / 25% / 25% / 25%</td></tr>
+        </table>
+      </div>
+
+      <div class="panel p-12">
+        <h3>完整报告</h3>
+        <div id="fullReport" class="prose"></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const scoreLabels = ["估值性价比", "经营质量", "趋势结构", "风险控制"];
+    const scoreValues = [0.0, 100.0, 100.0, 62.0];
+
+    new Chart(document.getElementById('scoreRadar'), {
+      type: 'radar',
+      data: {
+        labels: scoreLabels,
+        datasets: [{
+          label: '评分',
+          data: scoreValues,
+          backgroundColor: 'rgba(19,111,159,0.18)',
+          borderColor: '#136f9f',
+          pointBackgroundColor: '#0f4c81',
+          pointRadius: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          r: {
+            min: 0,
+            max: 100,
+            ticks: { stepSize: 20, backdropColor: 'transparent' },
+            grid: { color: '#dfe7ef' },
+            angleLines: { color: '#dfe7ef' }
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('targetBullet'), {
+      type: 'bar',
+      data: {
+        labels: ['当前值', '目标值'],
+        datasets: [{
+          data: [100.0, 118.91891891891892],
+          backgroundColor: ['#4d7ea8', '#0f8b5f'],
+          borderRadius: 8,
+          maxBarThickness: 24
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: false,
+        normalized: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            beginAtZero: true,
+            min: 0,
+            max: 200,
+            grid: { color: '#e8eef4' },
+            ticks: {
+              stepSize: 50,
+              callback: (v) => v + ' idx'
+            }
+          },
+          y: { grid: { display: false } }
+        }
+      }
+    });
+
+    const markdownSource = "# 紫金矿业 (601899) 投资分析报告\n\n> **报告日期**: 2026年03月02日  \n> **分析师**: AI Investment Analyst  \n> **数据周期**: 2025年12月-2026年2月  \n> **风险等级**: 中等风险\n\n---\n\n## 📊 执行摘要 (Executive Summary)\n\n| 指标 | 数值 | 评价 |\n|------|------|------|\n| **投资评级** | 买入 | 基于估值、波动与风险平衡 |\n| **目标价** | 2200.0元 | 上涨空间: +18.9% |\n| **当前价格** | 1850.0元 | 市值: 23,200亿元 |\n| **风险等级** | 中等风险 | 行业景气和经营执行不确定性 |\n\n### 💡 核心观点\n- **看多逻辑**: 主业经营相对稳健，现金流质量改善；估值处于可比区间，具备修复空间；行业景气边际变化带来业绩弹性\n- **看空风险**: 宏观需求波动影响收入增长；行业竞争加剧压缩利润空间；原材料或融资成本上行风险\n- **关键催化剂**: 业绩超预期、需求改善、政策支持\n\n---\n\n## 🏢 公司概况 (Company Overview)\n\n### 基本信息\n| 项目 | 内容 |\n|------|------|\n| **公司全称** | 紫金矿业 |\n| **所属行业** | 待补充 - 待补充（LLM推荐置信度低） |\n\n### 主营业务\n\n### 产品/服务结构\n\n---\n\n## 💰 财务分析 (Financial Analysis)\n\n### 盈利能力\n| 指标 | 最新值 | 同比 | 行业排名 | 评价 |\n|------|--------|------|----------|------|\n| **ROE** | 30.5 | 数据暂缺 | 数据暂缺 | 数据暂缺 |\n\n### 成长性分析\n\n### 现金流分析\n| 指标 | 数值 | 评价 |\n|------|------|------|\n\n### 偿债能力\n| 指标 | 数值 | 安全阈值 | 评价 |\n|------|------|----------|------|\n| **资产负债率** | 数据暂缺 | < 70% | 数据暂缺 |\n| **流动比率** | 数据暂缺 | > 1.5 | 数据暂缺 |\n| **速动比率** | 数据暂缺 | > 1.0 | 数据暂缺 |\n| **利息保障倍数** | 数据暂缺 | > 3 | 数据暂缺 |\n\n---\n\n## 📈 估值分析 (Valuation Analysis)\n\n### 当前估值水平\n| 指标 | 当前值 | 历史分位 | 行业对比 | 评价 |\n|------|--------|----------|----------|------|\n| **PE-TTM** | 35.2 | 60 | 数据暂缺 | 数据暂缺 |\n| **PB** | 11.5 | 55 | 数据暂缺 | 数据暂缺 |\n| **股息率(近12月)** | 1.50% | 数据暂缺 | 数据暂缺 | 一般 |\n\n### 估值模型\n#### DCF 估值 (Discounted Cash Flow)\n| 参数 | 基准情景 | 乐观情景 | 悲观情景 |\n|------|----------|----------|----------|\n| **预测期增长率** | 8.0% | 12.0% | 4.0% |\n| **永续增长率** | 2.5% | 3.0% | 2.0% |\n| **WACC** | 10.0% | 10.0% | 10.0% |\n| **每股内在价值** | 2200.0 | 2376.0 | 1702.0 |\n| **安全边际** | +18.92% | +28.43% | -8.00% |\n> 当前股价（统一比较基准）：**1850.0**\n\n#### 相对估值法\n| 方法 | 估值 | 当前价 | 潜在空间 |\n|------|------|--------|----------|\n| **PE Band** | 2222.0 | 1850.0 | +20.11% |\n| **PB Band** | 2178.0 | 1850.0 | +17.73% |\n| **PEG** | 2200.0 | 1850.0 | +18.92% |\n| **EV/EBITDA** | 2244.0 | 1850.0 | +21.30% |\n| **平均目标价** | 2211.0 | 1850.0 | +19.51% |\n\n### 估值结论\n基于待补充行业因子，基准估值 2200.00 元，较当前价格潜在空间 +18.92%；乐观/悲观区间 1702.00-2376.00 元。\n\n---\n\n## 📊 技术分析 (Technical Analysis)\n\n### 趋势分析\n| 周期 | 趋势方向 | 强度 | 关键价位 |\n|------|----------|------|----------|\n| **短期 (日线(5/10/20日均线))** | 数据暂缺 | 数据暂缺 | 支撑: 数据暂缺 / 阻力: 数据暂缺 |\n| **中期 (周线近似(20/60日均线≈4/12周))** | 数据暂缺 | 数据暂缺 | 支撑: 数据暂缺 / 阻力: 数据暂缺 |\n| **长期 (月线近似(120/250日均线≈6/12月))** | 数据暂缺 | 数据暂缺 | 支撑: 数据暂缺 / 阻力: 数据暂缺 |\n\n### 均线系统\n| 均线 | 当前值 | 股价位置 | 信号 |\n|------|--------|----------|------|\n\n**均线排列**: 数据暂缺 → 数据暂缺\n\n### MACD 指标\n| 指标 | 数值 | 信号 |\n|------|------|------|\n\n### RSI 指标\n| 周期 | 数值 | 状态 | 信号 |\n|------|------|------|------|\n\n### KDJ 指标\n| 指标 | 数值 | 信号 |\n|------|------|------|\n\n### 布林带 (BOLL)\n| 轨道 | 数值 | 股价位置 | 信号 |\n|------|------|----------|------|\n\n### 成交量分析\n| 指标 | 数值 | 评价 |\n|------|------|------|\n\n### 形态分析\n\n### 技术综合评分\n| 维度 | 评分 | 权重 | 加权得分 |\n|------|------|------|----------|\n| **趋势分析** | 数据暂缺 | 25% | 数据暂缺 |\n| **均线系统** | 数据暂缺 | 20% | 数据暂缺 |\n| **动量指标** | 数据暂缺 | 20% | 数据暂缺 |\n| **成交量** | 数据暂缺 | 15% | 数据暂缺 |\n| **形态结构** | 数据暂缺 | 10% | 数据暂缺 |\n| **支撑阻力** | 数据暂缺 | 10% | 数据暂缺 |\n| **总评分** | **数据暂缺** | **100%** | **数据暂缺** |\n\n### 技术结论\n\n---\n\n## 🎯 投资建议 (Investment Recommendation)\n\n### 综合评级\n\n<div align=\"center\">\n\n| 维度 | 评级 | 信心指数 |\n|------|------|----------|\n| **基本面** | 中性 | 中等 |\n| **估值水平** | 中性 | 中等 |\n| **技术形态** | 中性 | 中等 |\n| **综合评级** | **买入** | **中等** |\n\n</div>\n\n### 目标价位\n\n| 情景 | 目标价 | 潜在空间 | 概率 |\n|------|--------|----------|------|\n| **乐观情景** | 2376.0 | +28.43% | 30% |\n| **基准情景** | 2200.0 | +18.92% | 50% |\n| **悲观情景** | 1702.0 | -8.00% | 20% |\n\n### 投资策略\n\n#### 短期策略 (1-3个月)\n- **操作建议**: 区间内低吸高抛\n- **入场区间**: 1794.50-1830.39\n- **止损位**: 1740.66\n- **目标位**: 1942.50\n- **仓位建议**: 25%-40%\n\n#### 中期策略 (3-12个月)\n- **操作建议**: 趋势跟踪，回调增配\n- **入场区间**: 1702.00-1850.00\n- **止损位**: 1616.90\n- **目标位**: 2072.00\n- **仓位建议**: 50%-70%\n\n#### 长期策略 (1-3年)\n- **操作建议**: 基于估值与盈利兑现长期跟踪\n- **入场区间**: 1572.50-1702.00\n- **止损位**: 1446.70\n- **目标位**: 2312.50\n- **仓位建议**: 60%-80%\n\n### 关键监控指标\n\n#### 财务指标\n- [x] ROE（当前 30.50%，目标 >= 10%）\n\n#### 估值指标\n- [ ] PE-TTM（当前 35.20，目标 <= 20）\n- [ ] PB（当前 11.50，目标 <= 2.0）\n- [x] 目标上涨空间（当前 18.90%，目标 >= 8%）\n- [x] 目标价相对现价（当前 2200.00/1850.00，目标 目标价 >= 现价）\n\n#### 技术指标\n- [ ] 股价相对MA60（当前 1850.00/0.00，目标 站上 MA60）\n- [x] RSI(6)（当前 50.00，目标 20-80 区间）\n- [x] 量比（当前 1.00，目标 0.9-1.8）\n\n#### 市场情绪\n- [x] 风险等级（当前 中等风险，目标 非高风险）\n\n### 风险提示\n\n#### 公司特有风险\n宏观需求波动影响收入增长\n\n#### 行业风险\n行业竞争加剧压缩利润空间；待补充板块估值与景气存在阶段性波动\n\n#### 宏观风险\n关注宏观利率与信用周期变化对估值中枢的影响\n\n#### 市场风险\n原材料或融资成本上行风险；当前估值弹性偏高，若风险偏好回落易出现估值压缩\n\n---\n\n## 📋 监控与跟踪 (Monitoring & Tracking)\n\n### 分析师观点汇总\n| 机构 | 评级 | 目标价/估值口径 | 更新日期 |\n|------|------|----------------|----------|\n| 太平洋 | 买入 | 19.74 | 2026-01-18 |\n| 国信证券 | 增持 | 15.5 | 2025-10-22 |\n| 华鑫证券 | 买入 | 14.9 | 2025-10-22 |\n| 东吴证券 | 买入 | 15.86 | 2025-10-22 |\n| 华源证券 | 买入 | 15.47 | 2025-10-21 |\n\n---\n\n## 📊 附录 (Appendix)\n\n### A. 财务报表摘要\n#### 利润表 (单位: 亿元)\n| 项目 | 数据暂缺 | 数据暂缺 | 数据暂缺 | CAGR |\n|------|------------|------------|------------|------|\n\n#### 资产负债表 (单位: 亿元)\n| 项目 | 数据暂缺 | 数据暂缺 | 数据暂缺 |\n|------|------------|------------|------------|\n\n#### 现金流量表 (单位: 亿元)\n| 项目 | 数据暂缺 | 数据暂缺 | 数据暂缺 |\n|------|------------|------------|------------|\n\n### B. 估值模型详细计算\n#### DCF模型参数与结果\n| 参数 | 基准情景 | 乐观情景 | 悲观情景 |\n|------|----------|----------|----------|\n| 预测期增长率 | 8.0% | 12.0% | 4.0% |\n| 永续增长率 | 2.5% | 3.0% | 2.0% |\n| 折现率(WACC) | 10.0% | 10.0% | 10.0% |\n| 每股估值(元) | 2200.00 | 2376.00 | 1702.00 |\n| 当前股价(元) | 1850.00 | 1850.00 | 1850.00 |\n| 安全边际 | +18.92% | +28.43% | -8.00% |\n\n计算口径说明：基于当前自由现金流（数据暂缺）与三情景增长假设推导每股内在价值。\n\n#### 相对估值法详细计算\n| 方法 | 当前倍数/口径 | 估值结果(元) | 当前价(元) | 潜在空间 | 权重 |\n|------|---------------|-------------|-----------|----------|------|\n| PE Band | PE=35.20 | 2222.00 | 1850.00 | +20.11% | 25% |\n| PB Band | PB=11.50 | 2178.00 | 1850.00 | +17.73% | 25% |\n| PEG | PEG口径(PE/G) | 2200.00 | 1850.00 | +18.92% | 25% |\n| EV/EBITDA | EV/EBITDA=0.00 | 2244.00 | 1850.00 | +21.30% | 25% |\n\n校验项：PS=0.00，加权平均目标价=2211.00元（对应潜在空间 +19.51%）。\n行业因子来源：default_profile；行业=待补充。\n\n### C. 历史股价数据\n近120个交易日价格数据暂缺。\n\n### D. 龙虎榜数据\n近180天上榜次数：**0** 次；最近上榜日：**无**。 该指标用于识别交易拥挤度，作为财务主线的辅助观察项。\n\n### E. 大宗交易记录\n近180天暂无大宗交易数据。\n\n---\n\n## ⚠️ 免责声明 (Disclaimer)\n\n本报告仅供参考，不构成任何投资建议。投资者应独立做出投资决策，并自行承担投资风险。过去的表现不代表未来的结果。市场有风险，投资需谨慎。\n\n**报告生成时间**: 2026-03-02 14:40:11  \n**数据截止日期**: 2026-03-02 14:40:11  \n**下次更新**: 按需重新运行\n\n---\n\n*本报告由 A stock analysis 自动生成*\n\n---\n\n## 🧠 大模型点评 (Narrative)\n\n> 生成模式: `rule`  \n> 实际来源: `rule`\n\n### 规则点评\n- 标的 `紫金矿业` 当前综合评级为 **买入**，风险等级为 **中等风险**，预期空间 +18.9%。\n- 技术面短周期处于 **数据暂缺** 阶段，短期策略建议：区间内低吸高抛。\n- 财务与估值观察：数据暂缺 基于待补充行业因子，基准估值 2200.00 元，较当前价格潜在空间 +18.92%；乐观/悲观区间 1702.00-2376.00 元。\n- 结论：建议结合仓位纪律与止损规则，按计划分批执行，不追涨。\n";
+    const fullReportEl = document.getElementById('fullReport');
+    if (markdownSource && markdownSource.trim()) {
+      fullReportEl.innerHTML = marked.parse(markdownSource);
+    } else {
+      fullReportEl.innerHTML = '<p>暂无完整正文，可通过 --template 指定报告模板。</p>';
+    }
+  </script>
+</body>
+</html>
